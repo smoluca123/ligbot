@@ -17,15 +17,37 @@ export class UserEvent extends Listener {
 
 	private setBotStatus() {
 		const { client } = this.container;
+
+		// Danh sách các activities
+		const activities = [
+			{
+				name: '💸 Hết tiền rồi...',
+				type: 4 // ActivityType.Custom
+			},
+			{
+				name: '💸 Nghèo rồi...',
+				type: 4 // ActivityType.Custom
+			},
+			{
+				name: '💸 Đang hết tiền...',
+				type: 4 // ActivityType.Custom
+			}
+		];
+
+		// Set activity đầu tiên
 		client.user?.setPresence({
-			activities: [
-				{
-					name: '💸 Hết tiền rồi...',
-					type: 4 // ActivityType.Custom
-				}
-			]
+			activities: [activities[0]]
 			// status: 'dnd' // Do Not Disturb status
 		});
+
+		// Thay đổi activity mỗi 30 giây (30000ms)
+		setInterval(() => {
+			const randomActivity = activities[Math.floor(Math.random() * activities.length)];
+			client.user?.setPresence({
+				activities: [randomActivity]
+				// status: 'dnd'
+			});
+		}, 30000); // 30 giây
 	}
 
 	private printBanner() {

@@ -1,0 +1,35 @@
+generator client {
+  provider = "prisma-client-js"
+  // output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  discordId String   @unique @map("discord_id")
+  username  String
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  messages MessageHistory[]
+
+  @@map("users")
+}
+
+model MessageHistory {
+  id          String   @id @default(cuid())
+  userId      String   @map("user_id")
+  userMessage String   @map("user_message")
+  botResponse String   @map("bot_response")
+  createdAt   DateTime @default(now())
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("message_histories")
+}
