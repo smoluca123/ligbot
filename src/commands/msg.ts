@@ -236,7 +236,7 @@ export class UserCommand extends Command {
 			// Add timeout to prevent hanging
 			const completion = (await Promise.race([
 				openai.chat.completions.create({
-					model: 'deepseek/deepseek-chat-v3.1:free',
+					model: 'google/gemini-2.5-flash',
 					messages: [
 						{
 							role: 'system',
